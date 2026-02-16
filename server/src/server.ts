@@ -16,7 +16,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: env.CLIENT_URL.split(",").map((url) => url.trim()),
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -50,7 +50,7 @@ app.use((_req, res) => {
 app.use(errorHandler);
 
 // ── Start Server ─────────────────────────────────────────────────────────
-app.listen(env.PORT, () => {
+app.listen(env.PORT, "0.0.0.0", () => {
   console.log(`\n🚀 Trackademic API running on http://localhost:${env.PORT}`);
   console.log(`📋 Environment: ${env.NODE_ENV}`);
   console.log(`🔗 Client URL: ${env.CLIENT_URL}\n`);
