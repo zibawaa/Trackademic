@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Registered users of the application
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  name         String
+  passwordHash String       @map("password_hash")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  assignments  Assignment[]
+
+  @@map("users")
+}
+
+/// Priority levels for assignments
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+/// Student assignments with deadlines
+model Assignment {
+  id              String   @id @default(uuid())
+  title           String
+  description     String?
+  course          String
+  deadline        DateTime
+  priority        Priority @default(MEDIUM)
+  isCompleted     Boolean  @default(false) @map("is_completed")
+  completedAt     DateTime? @map("completed_at")
+  reminder24hSent Boolean  @default(false) @map("reminder_24h_sent")
+  reminder1hSent  Boolean  @default(false) @map("reminder_1h_sent")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  userId          String   @map("user_id")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([deadline])
+  @@map("assignments")
+}
