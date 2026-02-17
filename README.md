@@ -2,6 +2,16 @@
 
 A full-stack web application that helps students track assignment deadlines, avoid missed submissions, and stay organized throughout the semester.
 
+## Here's a representation of the website
+
+### Login Page
+
+![Login Page](screenshots/login-page.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard-page.png)
+
 ## Features
 
 - **User Authentication** - Secure registration and login with JWT tokens
