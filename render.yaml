@@ -8,8 +8,8 @@ services:
   # Backend API
   - type: web
     name: trackademic-api
-    plan: free
     runtime: node
+    plan: free
     rootDir: server
     buildCommand: npm install && npx prisma generate && npm run build
     startCommand: npx prisma migrate deploy && node dist/server.js
@@ -25,10 +25,7 @@ services:
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: CLIENT_URL
-        fromService:
-          name: trackademic-client
-          type: web
-          property: host
+        sync: false
       - key: SENDGRID_API_KEY
         sync: false
       - key: SENDGRID_FROM_EMAIL
@@ -37,7 +34,6 @@ services:
   # Frontend Static Site
   - type: web
     name: trackademic-client
-    plan: free
     runtime: static
     rootDir: client
     buildCommand: npm install && npm run build
@@ -48,7 +44,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          name: trackademic-api
-          type: web
-          property: host
+        sync: false
