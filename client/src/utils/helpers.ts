@@ -78,6 +78,14 @@ export function getErrorMessage(error: unknown): string {
     }
     return axiosError.response?.data?.message || "An error occurred";
   }
-  if (error instanceof Error) return error.message;
+  if (error instanceof Error) {
+    if (error.message.includes("timeout")) {
+      return "Server is starting up, please try again in a few seconds";
+    }
+    if (error.message === "Network Error") {
+      return "Cannot reach the server. Please check your connection and try again";
+    }
+    return error.message;
+  }
   return "An unexpected error occurred";
 }
