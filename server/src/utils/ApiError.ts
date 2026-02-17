@@ -13,7 +13,9 @@ export class ApiError extends Error {
 
     // Maintain proper prototype chain
     Object.setPrototypeOf(this, ApiError.prototype);
-    Error.captureStackTrace(this, this.constructor);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, this.constructor);
+    }
   }
 
   static badRequest(message: string): ApiError {
